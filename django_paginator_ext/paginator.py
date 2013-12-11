@@ -15,7 +15,7 @@ class Paginator(DjangoPaginator):
         self.layout = layout
 
     def get_navigation(self, current_page=1):
-        return self.layout.get_navigation(paginator=self, current_page=current_page)
+        return self.layout.get_navigation(paginator=self, current_page=self.page(current_page))
 
     def _get_page(self, *args, **kwargs):
         return Page(*args, **kwargs)
@@ -36,6 +36,9 @@ class PartialPaginator(Paginator):
                 raise EmptyPage('That page contains no results')
             return self._get_page(self.object_list, 1, self)
         return self._get_page(self.object_list, self.page_number, self)
+
+    def get_navigation(self):
+        return self.layout.get_navigation(paginator=self, current_page=self.page())
 
     @property
     def page_number(self):
