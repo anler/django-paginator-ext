@@ -46,3 +46,28 @@ def test_page_has_other_pages():
     assert page.has_other_pages()
     assert page.next_page_number() == 3
     assert page.previous_page_number() == 1
+
+
+def test_page_window_beginning():
+    page = Paginator(['lorem'], per_page=1, total=5).page()
+    assert page.window() == [1, 2, 3, 4, 5]
+
+
+def test_page_window_end():
+    page = Paginator(['lorem'], per_page=1, total=5, offset=3).page()
+    assert page.window() == [1, 2, 3, 4, 5]
+
+
+def test_page_window_middle():
+    page = Paginator(['lorem'], per_page=1, total=10, offset=4).page()
+    assert page.window() == [3, 4, 5, 6, 7]
+
+
+def test_page_window_close_beginning():
+    page = Paginator(['lorem'], per_page=1, total=10, offset=1).page()
+    assert page.window() == [1, 2, 3, 4, 5]
+
+
+def test_page_window_close_end():
+    page = Paginator(['lorem'], per_page=1, total=10, offset=8).page()
+    assert page.window() == [6, 7, 8, 9, 10]
