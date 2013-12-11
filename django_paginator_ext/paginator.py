@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from django.core.paginator import Paginator as DjangoPaginator, EmptyPage
+from django.core.paginator import Paginator as DjangoPaginator, EmptyPage, Page
 
 from .layout import SimpleLayout
 
@@ -16,6 +16,9 @@ class Paginator(DjangoPaginator):
 
     def get_navigation(self, current_page=1):
         return self.layout.get_navigation(paginator=self, current_page=current_page)
+
+    def _get_page(self, *args, **kwargs):
+        return Page(*args, **kwargs)
 
 
 class PartialPaginator(Paginator):
