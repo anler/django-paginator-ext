@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
 from django.core.paginator import Paginator as DjangoPaginator, EmptyPage
+
+from .layout import SimpleLayout
 
 
 class Paginator(DjangoPaginator):
 
     def __init__(self, object_list, per_page, orphans=0, allow_empty_first_page=True, layout=None):
         super(Paginator, self).__init__(object_list, per_page, orphans, allow_empty_first_page)
+        if layout is None:
+            layout = getattr(settings, 'PAGINATOR_LAYOUT', SimpleLayout())
         self.layout = layout
 
-    def get_navigation(self):
-        return self.layout.get_navigation(paginator=self)
+    def get_navigation(self, current_page=1):
+        return self.layout.get_navigation(paginator=self, current_page=current_page)
 
 
 class PartialPaginator(Paginator):
+
     def __init__(self, object_list, per_page, total, offset=0, orphans=0,
                  allow_empty_first_page=True, layout=None):
         super(PartialPaginator, self).__init__(object_list, per_page, orphans,

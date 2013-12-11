@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from pagination_again import PartialPaginator as Paginator, EmptyPage
+from django_paginator_ext import PartialPaginator as Paginator, EmptyPage
 
 
 def test_offset():
