@@ -12,7 +12,7 @@ try:
     README = open(os.path.join(here, "README.rst")).read()
     README += open(os.path.join(here, "HISTORY.rst")).read()
 except IOError:
-    README = "https://github.com/ikame/django-pagination-again"
+    README = "https://github.com/ikame/django-paginator-ext"
 
 
 class PyTest(TestCommand):
@@ -27,13 +27,13 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-setup(name="django-pagination-again",
+setup(name="django-paginator-ext",
       version="0.1",
       description="Extensions over Django's default pagination capabilities.",
       long_description=README,
       author="ikame",
       author_email="anler86@gmail.com",
-      url="https://github.com/ikame/django-pagination-again",
+      url="https://github.com/ikame/django-paginator-ext",
       license="MIT",
       install_requires=["six"],
       tests_require=["pytest", "mock"],
