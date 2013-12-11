@@ -43,7 +43,7 @@ class PartialPaginator(Paginator):
     @property
     def page_number(self):
         try:
-            page = sum(divmod(self.offset, self.per_page)) if self.offset else 1
+            page = sum(divmod(self.offset + 1, self.per_page)) if self.offset else 1
         except ZeroDivisionError:
             page = 0
         return page

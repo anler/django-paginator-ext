@@ -5,8 +5,13 @@ from django_paginator_ext import PartialPaginator as Paginator, EmptyPage
 
 
 def test_offset():
-    assert Paginator(['lorem', 'ipsum'], per_page=2, total=3).page().number == 1
-    assert Paginator(['lorem', 'ipsum'], per_page=2, total=7, offset=5).page().number == 3
+    assert Paginator(['lorem'], per_page=1, total=3).page().number == 1
+    assert Paginator(['lorem'], per_page=1, total=3, offset=1).page().number == 2
+    assert Paginator(['lorem'], per_page=1, total=3, offset=2).page().number == 3
+
+    assert Paginator(['lorem', 'ipsum'], per_page=2, total=5).page().number == 1
+    assert Paginator(['lorem', 'ipsum'], per_page=2, total=5, offset=2).page().number == 2
+    assert Paginator(['lorem', 'ipsum'], per_page=2, total=5, offset=4).page().number == 3
 
 
 def test_empty_page_allowed():
