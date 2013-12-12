@@ -31,12 +31,6 @@ class Page(DjangoPage):
 
 class Paginator(DjangoPaginator):
 
-    def __init__(self, object_list, per_page, orphans=0, allow_empty_first_page=True):
-        super(Paginator, self).__init__(object_list, per_page, orphans, allow_empty_first_page)
-
-    def get_navigation(self, current_page=1):
-        return self.layout.get_navigation(paginator=self, current_page=self.page(current_page))
-
     def _get_page(self, *args, **kwargs):
         return Page(*args, **kwargs)
 
@@ -46,39 +40,26 @@ class Paginator(DjangoPaginator):
 
 class PartialPaginator(Paginator):
 
-    def __init__(self, object_list, per_page, total, offset=0, orphans=0,
-                 allow_empty_first_page=True):
-        super(PartialPaginator, self).__init__(object_list, per_page, orphans,
-                                               allow_empty_first_page)
-        self.total = total
-        self.offset = offset
+    def __init__(self, object_list, per_page,  count, page=1, *args, **kwargs):
+        super(PartialPaginator, self).__init__(object_list, per_page, *args, **kwargs)
+        self._count = count
+        self._current_page = page
 
     def page(self):
-        if not self.count:
-            if not self.allow_empty_first_page:
-                raise EmptyPage('That page contains no results')
-            return self._get_page(self.object_list, 1, self)
-        return self._get_page(self.object_list, self.page_number, self)
-
-    def get_navigation(self):
-        return self.layout.get_navigation(paginator=self, current_page=self.page())
-
-    @property
-    def page_number(self):
-        try:
-            page = sum(divmod(self.offset + 1, self.per_page)) if self.offset else 1
-        except ZeroDivisionError:
-            page = 0
-        return page
+        if not self.allow_empty_first_page and not self.object_list:
+            raise EmptyPage('That page contains no results')
+        num_pages = self.num_pages
+        current_page = self._current_page if self._current_page <= num_pages else num_pages
+        return self._get_page(self.object_list, current_page, self)
 
     def _get_num_pages(self):
         try:
-            num_pages = sum(divmod(self.total, self.per_page))
+            num_pages = sum(divmod(self.count, self.per_page)) if self.count > self.per_page else 1
         except ZeroDivisionError:
             num_pages = 0
         return num_pages
     num_pages = property(_get_num_pages)
 
     def _get_count(self):
-        return self.total
+        return self._count
     count = property(_get_count)
