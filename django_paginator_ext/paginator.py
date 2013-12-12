@@ -10,12 +10,13 @@ class Page(DjangoPage):
         left = current - 1
         right = current + 1
         window = [current]
+        is_valid_window = lambda: len(window) <= width * 2 + 1
 
         while width:
             if self.paginator.has_page(left):
                 window.insert(0, left)
                 left -= 1
-            elif self.paginator.has_page(right):
+            elif self.paginator.has_page(right) and is_valid_window():
                 width += 1
 
             if self.paginator.has_page(right):

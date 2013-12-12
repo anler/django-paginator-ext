@@ -51,22 +51,22 @@ def test_page_has_other_pages():
 
 
 def test_page_window_beginning():
-    page = Paginator(['lorem'], per_page=1, count=5).page()
+    page = Paginator(['lorem'], per_page=1, count=10, page=1).page()
     assert page.window() == [1, 2, 3, 4, 5]
 
 
 def test_page_window_end():
-    page = Paginator(['lorem'], per_page=1, count=5, page=3).page()
+    page = Paginator(['lorem'], per_page=1, count=10, page=3).page()
     assert page.window() == [1, 2, 3, 4, 5]
 
 
 def test_page_window_middle():
     page = Paginator(['lorem'], per_page=1, count=10, page=4).page()
-    assert page.window() == [3, 4, 5, 6, 7]
+    assert page.window() == [2, 3, 4, 5, 6]
 
 
 def test_page_window_close_beginning():
-    page = Paginator(['lorem'], per_page=1, count=10, page=1).page()
+    page = Paginator(['lorem'], per_page=1, count=10, page=2).page()
     assert page.window() == [1, 2, 3, 4, 5]
 
 
